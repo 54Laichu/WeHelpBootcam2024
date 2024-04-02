@@ -216,7 +216,7 @@ main {
   .box:nth-child(5n+3),
   .box:nth-child(5n+4),
   .box:nth-child(5n+5) {
-    width: calc(16.33% - 20px);
+    width: calc(16.25% - 20px);
   }
 }
 
