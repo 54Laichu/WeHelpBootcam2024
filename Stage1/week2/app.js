@@ -121,10 +121,10 @@ function chooseBest(availableConsultants, criteria) {
 function book(consultants, hour, duration, criteria) {
   initConsultantAvailability();
   let { availableConsultants: candidates, timeToBook } = checkAvailability(hour, duration);
-  let best = chooseBest(candidates, criteria);
-  if (best) {
-    best.time.push(...timeToBook);
-    console.log(best.name);
+  let chosenOne = chooseBest(candidates, criteria);
+  if (chosenOne) {
+    chosenOne.time.push(...timeToBook);
+    console.log(chosenOne.name);
   } else {
     console.log("No Service");
   }

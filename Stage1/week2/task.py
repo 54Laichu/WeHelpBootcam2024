@@ -63,7 +63,7 @@ consultants = [
 
 consultant_availability = None
 
-def init_consultant_availability():
+def init_consultant_availability(consultants):
   global consultant_availability
   if consultant_availability is None:
     consultant_availability = [{"name": c["name"], "rate": c["rate"], "price": c["price"], "time": []} for c in consultants]
@@ -91,12 +91,12 @@ def choose_best(available_consultants, criteria):
 
 def book(consultants, hour, duration, criteria):
   global consultant_availability
-  init_consultant_availability()
+  init_consultant_availability(consultants)
   available_consultants, time_to_book = check_availability(hour, duration)
-  best = choose_best(available_consultants, criteria)
-  if best:
-    best["time"].extend(time_to_book)
-    print(best["name"])
+  chosen_one = choose_best(available_consultants, criteria)
+  if chosen_one:
+    chosen_one["time"].extend(time_to_book)
+    print(chosen_one["name"])
   else:
       print("No Service")
 
