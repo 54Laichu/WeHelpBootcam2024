@@ -56,49 +56,49 @@ find_and_print(messages, "Xindian City Hall") # print Vivian
 print("----------Task 2----------")
 
 consultants = [
-    {"name": "John", "rate": 4.5, "price": 1000},
-    {"name": "Bob", "rate": 3, "price": 1200},
-    {"name": "Jenny", "rate": 3.8, "price": 800}
+  {"name": "John", "rate": 4.5, "price": 1000},
+  {"name": "Bob", "rate": 3, "price": 1200},
+  {"name": "Jenny", "rate": 3.8, "price": 800}
 ]
 
 consultant_availability = None
 
 def init_consultant_availability():
-    global consultant_availability
-    if consultant_availability is None:
-        consultant_availability = [{"name": c["name"], "rate": c["rate"], "price": c["price"], "time": []} for c in consultants]
+  global consultant_availability
+  if consultant_availability is None:
+    consultant_availability = [{"name": c["name"], "rate": c["rate"], "price": c["price"], "time": []} for c in consultants]
 
 def check_availability(hour, duration):
-    available_consultants = []
-    time_to_book = list(range(hour, hour + duration))
+  available_consultants = []
+  time_to_book = list(range(hour, hour + duration))
 
-    for consultant in consultant_availability:
-        not_available = any(t in consultant["time"] for t in time_to_book)
-        if not not_available:
-            available_consultants.append(consultant)
+  for consultant in consultant_availability:
+    not_available = any(t in consultant["time"] for t in time_to_book)
+    if not not_available:
+      available_consultants.append(consultant)
 
-    return available_consultants, time_to_book
+  return available_consultants, time_to_book
 
 def choose_best(available_consultants, criteria):
-    if not available_consultants:
-        return None
-    best = None
-    if criteria == "rate":
-        best = max(available_consultants, key=lambda x: x[criteria])
-    elif criteria == "price":
-        best = min(available_consultants, key=lambda x: x[criteria])
-    return best
+  if not available_consultants:
+    return None
+  best = None
+  if criteria == "rate":
+    best = max(available_consultants, key=lambda x: x[criteria])
+  elif criteria == "price":
+    best = min(available_consultants, key=lambda x: x[criteria])
+  return best
 
 def book(consultants, hour, duration, criteria):
-    global consultant_availability
-    init_consultant_availability()
-    available_consultants, time_to_book = check_availability(hour, duration)
-    best = choose_best(available_consultants, criteria)
-    if best:
-        best["time"].extend(time_to_book)
-        print(best["name"])
-    else:
-        print("No Service")
+  global consultant_availability
+  init_consultant_availability()
+  available_consultants, time_to_book = check_availability(hour, duration)
+  best = choose_best(available_consultants, criteria)
+  if best:
+    best["time"].extend(time_to_book)
+    print(best["name"])
+  else:
+      print("No Service")
 
 # Running the book function with given parameters
 book(consultants, 15, 1, "price")  # Jenny
@@ -108,3 +108,50 @@ book(consultants, 20, 2, "rate")  # John
 book(consultants, 11, 1, "rate")  # Bob
 book(consultants, 11, 2, "rate")  # No Service
 book(consultants, 14, 3, "price")  # John
+
+print("----------Task 3----------")
+def find_unique_index(arr):
+  frequency_map = {}
+  for cur in arr:
+    frequency_map[cur] = frequency_map.get(cur, 0) + 1
+
+  for index, element in enumerate(arr):
+    if frequency_map[element] == 1:
+      return index
+  return -1
+
+def func(*data):
+  middle_name = []
+  for name in data:
+    if len(name) == 2 or len(name) == 3:
+      middle_name.append(name[1])
+    elif len(name) == 4 or len(name) == 5:
+      middle_name.append(name[2])
+
+  unique_index = find_unique_index(middle_name)
+  if unique_index != -1:
+    print(data[unique_index])
+  else:
+    print("沒有")
+
+func("彭大牆", "陳王明雅", "吳明") # print 彭大牆
+func("彭大牆", "陳王明雅", "吳明") # print 彭大牆
+func("郭靜雅", "王立強", "郭林靜宜", "郭立恆", "林花花") # print 林花花
+func("郭宣雅", "林靜宜", "郭宣恆", "林靜花") # print 沒有
+func("郭宣雅", "夏曼藍波安", "郭宣恆") # print 夏曼藍波安
+
+print("----------Task 4----------")
+
+def get_number(index):
+  sum = 0
+  for i in range(1, index + 1):
+    if i % 3 == 1 or i % 3 == 2:
+      sum += 4
+    else:
+      sum -= 1
+  print(sum)
+
+get_number(1) # print 4
+get_number(5) # print 15
+get_number(10) # print 25
+get_number(30) # print 70
