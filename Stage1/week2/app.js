@@ -54,7 +54,15 @@ function findAndPrint(messages, currentStation) {
     cleanedMessages[message] = Math.abs(cleanedMessages[message] - currentStationIndex)
   }
   let min = Math.min(...Object.values(cleanedMessages));
-  console.log(Object.keys(cleanedMessages).find(key => cleanedMessages[key] === min));
+  let closestMessageKey = null;
+
+  for (let key in cleanedMessages) {
+    if (cleanedMessages[key] === min) {
+      closestMessageKey = key;
+      break;
+    }
+  }
+  console.log(closestMessageKey);
 }
 
 findAndPrint(messages, "Wanlong"); // print Mary
