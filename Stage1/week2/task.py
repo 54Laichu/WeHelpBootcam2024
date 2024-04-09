@@ -54,3 +54,57 @@ find_and_print(messages, "Ximen") # print Bob
 find_and_print(messages, "Xindian City Hall") # print Vivian
 
 print("----------Task 2----------")
+
+consultants = [
+    {"name": "John", "rate": 4.5, "price": 1000},
+    {"name": "Bob", "rate": 3, "price": 1200},
+    {"name": "Jenny", "rate": 3.8, "price": 800}
+]
+
+consultant_availability = None
+
+def init_consultant_availability():
+    global consultant_availability
+    if consultant_availability is None:
+        consultant_availability = [{"name": c["name"], "rate": c["rate"], "price": c["price"], "time": []} for c in consultants]
+
+def check_availability(hour, duration):
+    available_consultants = []
+    time_to_book = list(range(hour, hour + duration))
+
+    for consultant in consultant_availability:
+        not_available = any(t in consultant["time"] for t in time_to_book)
+        if not not_available:
+            available_consultants.append(consultant)
+
+    return available_consultants, time_to_book
+
+def choose_best(available_consultants, criteria):
+    if not available_consultants:
+        return None
+    best = None
+    if criteria == "rate":
+        best = max(available_consultants, key=lambda x: x[criteria])
+    elif criteria == "price":
+        best = min(available_consultants, key=lambda x: x[criteria])
+    return best
+
+def book(consultants, hour, duration, criteria):
+    global consultant_availability
+    init_consultant_availability()
+    available_consultants, time_to_book = check_availability(hour, duration)
+    best = choose_best(available_consultants, criteria)
+    if best:
+        best["time"].extend(time_to_book)
+        print(best["name"])
+    else:
+        print("No Service")
+
+# Running the book function with given parameters
+book(consultants, 15, 1, "price")  # Jenny
+book(consultants, 11, 2, "price")  # Jenny
+book(consultants, 10, 2, "price")  # John
+book(consultants, 20, 2, "rate")  # John
+book(consultants, 11, 1, "rate")  # Bob
+book(consultants, 11, 2, "rate")  # No Service
+book(consultants, 14, 3, "price")  # John
