@@ -81,7 +81,7 @@ const consultants = [
 
 let consultantAvailability = null;
 
-function initConsultantAvailability() {
+function initConsultantAvailability(consultants) {
   if (!consultantAvailability) {
     consultantAvailability = consultants.map(consultant => ({
       ...consultant,
@@ -119,7 +119,7 @@ function chooseBest(availableConsultants, criteria) {
 }
 
 function book(consultants, hour, duration, criteria) {
-  initConsultantAvailability();
+  initConsultantAvailability(consultants);
   let { availableConsultants: candidates, timeToBook } = checkAvailability(hour, duration);
   let chosenOne = chooseBest(candidates, criteria);
   if (chosenOne) {
