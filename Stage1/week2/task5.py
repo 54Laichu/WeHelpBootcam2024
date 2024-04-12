@@ -7,7 +7,7 @@ def find_stat(stat):
 
 def find(spaces, stat, n):
     car_can_book = find_stat(stat)
-    if car_can_book == []:
+    if not car_can_book:
         return -1
 
     perfect_car = {}
@@ -15,7 +15,7 @@ def find(spaces, stat, n):
         if spaces[car] >= n:
             perfect_car[car] = spaces[car]
 
-    if perfect_car == {}:
+    if not perfect_car:
         result = -1
     else:
         result = min(perfect_car, key=perfect_car.get)
