@@ -32,7 +32,7 @@ async function fetchData() {
 
   const response = await fetch('https://padax.github.io/taipei-day-trip-resources/taipei-attractions-assignment-1');
   const data = await response.json();
-  spotArray = (data["data"]["results"]);
+  const spotArray = (data["data"]["results"]);
 
   for (let i = 0; i < 13; i++) {
     if (i < 3) {
@@ -72,6 +72,43 @@ async function fetchData() {
       boxes.appendChild(div);
     }
   }
+
+  let currentIndex = 13;
+
+  const loadButton = document.querySelector('.load-button');
+  loadButton.addEventListener('click', function () {
+
+    const endIndex = currentIndex + 10;
+    for (let i = currentIndex; i < endIndex && i < spotArray.length; i++) {
+      const div = document.createElement('div');
+      div.classList.add('box');
+
+      const img = document.createElement('img');
+      img.src = findFirstImage(spotArray[i]["filelist"]);
+      img.alt = spotArray[i]["stitle"];
+      div.appendChild(img);
+
+      const boxText = document.createElement('div');
+      boxText.classList.add('box-text');
+
+      const p = document.createElement('p');
+      p.textContent = spotArray[i]["stitle"].length > 7 ? spotArray[i]["stitle"].slice(0, 7) + "..." : spotArray[i]["stitle"];
+      boxText.appendChild(p);
+      div.appendChild(boxText);
+
+      const star = document.createElement('span');
+      star.classList.add('fa', 'fa-star');
+      div.appendChild(star);
+
+      boxes.appendChild(div);
+    }
+
+    currentIndex = endIndex;
+
+    if (currentIndex >= spotArray.length) {
+      loadButton.style.display = 'none';
+    }
+  });
 }
 
 fetchData()
