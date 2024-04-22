@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Home Page</title>
+  <link rel="stylesheet" href="{{ url_for('static', path='/css/style.css') }}">
+  <script src="{{ url_for('static', path='/js/script.js') }}"></script>
+</head>
+<body>
+  <div class="container">
+    <div class="formHeader">
+      <h1>歡迎光臨，請輸入帳號密碼</h1>
+    </div>
+    <div class="formBody">
+      <form id="signinForm" method="post" action="/signin">
+        <label for="username">
+          帳號
+          <input type="text" name="username" placeholder="Username" required><br>
+        </label>
+        <label for="password">
+          密碼
+          <input type="password" name="password" placeholder="Password" required><br>
+        </label>
+        <input type="checkbox" id="checkbox" required> 同意條款<br>
+        <input type="submit" value="Sign In">
+      </form>
+    </div>
+  </div>
+</body>
+</html>
