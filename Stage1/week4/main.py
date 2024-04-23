@@ -1,10 +1,13 @@
 from fastapi import FastAPI, Request, Form, status
-from fastapi.responses import HTMLResponse, RedirectResponse, ORJSONResponse
+from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from starlette.middleware.sessions import SessionMiddleware
 from typing import Annotated
 
 app = FastAPI()
+
+app.add_middleware(SessionMiddleware, secret_key="your_secret_key")
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
@@ -18,15 +21,23 @@ async def home(request: Request):
 async def signin(request: Request, username: Annotated[str, Form(...)], password: Annotated[str, Form(...)]):
     if not username or not password:
         return RedirectResponse(url="/error?message=Please enter username and password", status_code=status.HTTP_400_BAD_REQUEST)
-
+    
     if username == "test" and password == "test":
-        return RedirectResponse(url="/member", status_code=status.HTTP_302_FOUND)
+        request.session["SIGNED_IN"] = True
+        return RedirectResponse(url="/member", status_code=status.HTTP_303_SEE_OTHER)
     else:
         return RedirectResponse(url="/error?message=WrongInfo", status_code=status.HTTP_303_SEE_OTHER)
 
 @app.get("/member", response_class=HTMLResponse)
 async def member(request: Request):
+    if not request.session.get("SIGNED_IN"):
+        return RedirectResponse(url="/", status_code=status.HTTP_303_SEE_OTHER)
     return templates.TemplateResponse("member.html", {"request": request})
+
+@app.get("/signout")
+async def signout(request: Request):
+    request.session["SIGNED_IN"] = False
+    return RedirectResponse(url="/", status_code=status.HTTP_303_SEE_OTHER)
 
 @app.get("/error", response_class=HTMLResponse)
 async def error(request: Request):
