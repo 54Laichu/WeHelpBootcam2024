@@ -43,5 +43,5 @@ with open("data/error_messages.json", "r") as file:
         return RedirectResponse(url="/", status_code=status.HTTP_303_SEE_OTHER)
 
     @app.get("/error", response_class=HTMLResponse)
-    async def error(request: Request):
-        return templates.TemplateResponse("error.html", {"request": request})
+    async def error(request: Request, message: str):
+        return templates.TemplateResponse("error.html", {"request": request, "message": message})
