@@ -81,7 +81,7 @@ async def signin(request: Request, username: Annotated[str, Form(...)], password
             request.session["member_name"] = member[1]
             return RedirectResponse(url="/member", status_code=status.HTTP_303_SEE_OTHER)
         else:
-            return RedirectResponse(url=f"/error?message={ERROR_MESSAGES['invalid_credentials']}", status_code=status.HTTP_401_UNAUTHORIZED)
+            return RedirectResponse(url=f"/error?message={ERROR_MESSAGES['invalid_credentials']}", status_code=status.HTTP_303_SEE_OTHER)
 
 @app.post("/signup")
 async def signup(request: Request, name: Annotated[str, Form(...)], username: Annotated[str, Form(...)], password: Annotated[str, Form(...)]):
