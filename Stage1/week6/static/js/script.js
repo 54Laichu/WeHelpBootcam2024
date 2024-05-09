@@ -1,11 +1,11 @@
 document.addEventListener('DOMContentLoaded', function() {
-  const signupForm = document.getElementById('signupForm');
-  const signinForm = document.getElementById('signinForm');
+  const signupForm = document.querySelector('#signupForm');
+  const signinForm = document.querySelector('#signinForm');
 
   signupForm.addEventListener('submit', function(event) {
-    const nameInput = document.getElementById('name-input');
-    const usernameInput = document.getElementById('username-input');
-    const passwordInput = document.getElementById('password-input');
+    const nameInput = document.querySelector('#name-input');
+    const usernameInput = document.querySelector('#username-input');
+    const passwordInput = document.querySelector('#password-input');
 
     if (!nameInput.value || !usernameInput.value || !passwordInput.value) {
       event.preventDefault();
@@ -14,8 +14,8 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   signinForm.addEventListener('submit', function(event) {
-    const usernameInput = document.getElementById('signin-username-input');
-    const passwordInput = document.getElementById('signin-password-input');
+    const usernameInput = document.querySelector('#signin-username-input');
+    const passwordInput = document.querySelector('#signin-password-input');
 
     if (!usernameInput.value || !passwordInput.value) {
       event.preventDefault();

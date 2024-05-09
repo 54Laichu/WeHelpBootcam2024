@@ -42,7 +42,7 @@ async def member(request: Request):
         return RedirectResponse(url="/", status_code=status.HTTP_303_SEE_OTHER)
 
     cursor = db.cursor()
-    query = "SELECT member.username, message.content FROM message JOIN member ON message.member_id = member.id ORDER BY message.time DESC"
+    query = "SELECT member.id, member.username, message.id, message.content FROM message JOIN member ON message.member_id = member.id ORDER BY message.time DESC"
     cursor.execute(query)
     messages = cursor.fetchall()
     cursor.close()
@@ -108,3 +108,20 @@ async def signup(request: Request, name: Annotated[str, Form(...)], username: An
 async def signout(request: Request):
     request.session.clear()
     return RedirectResponse(url="/", status_code=status.HTTP_303_SEE_OTHER)
+
+@app.post("/deleteMessage")
+async def delete_message(request: Request, message_id: str = Form(...)):
+    if "member_id" not in request.session:
+        return RedirectResponse(url="/", status_code=status.HTTP_303_SEE_OTHER)
+
+    member_id = request.session["member_id"]
+    message_id = int(message_id)
+
+    cursor = db.cursor()
+    query = "DELETE FROM message WHERE id = %s AND member_id = %s"
+    values = (message_id, member_id)
+    cursor.execute(query, values)
+    db.commit()
+    cursor.close()
+
+    return RedirectResponse(url="/member", status_code=status.HTTP_303_SEE_OTHER)

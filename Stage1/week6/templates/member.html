@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Member Page</title>
   <link rel="stylesheet" href="{{ url_for('static', path='/css/style.css') }}">
+  <script src="{{ url_for('static', path='/js/deleteButton.js') }}"></script>
 </head>
 <body>
   <div class="container">
@@ -16,7 +17,7 @@
       <h2>{{ request.session.get('member_username') }},歡迎登入系統</h2>
       <a href="/signout">登出系統</a>
     </div>
-    <div class="formBody"  style="border-top: 1px solid #ccc;">
+    <div class="formBody" style="border-top: 1px solid #ccc;">
       <h2>快來留言吧</h2>
       <form action="/createMessage" method="post">
         <label for="content">
@@ -26,12 +27,16 @@
         <input type="submit" value="送出" class="btn">
       </form>
     </div>
-    <div class="formBody"  style="border-top: 1px solid #ccc;">
-      <h2>過去的留言</h2>
+    <div class="formBody" style="border-top: 1px solid #ccc;">
       {% for message in messages %}
-        <div class="message">
-          <p><strong>{{ message[0] }}:</strong> {{ message[1] }}</p>
+      <div class="message" style="display: flex; justify-content: center; padding: 5px; ">
+        <p><strong>{{ message[1] }}:</strong> {{ message[3] }}</p>
+        {% if message[0] == request.session.get('member_id') %}
+        <div style="margin-left: 10px; width: 20px;">
+          <button class="delete-button" style="width: 100%;" data-message-id="{{ message[2] }}">x</button>
         </div>
+        {% endif %}
+      </div>
       {% endfor %}
     </div>
   </div>
