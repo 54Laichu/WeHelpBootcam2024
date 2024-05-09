@@ -1,3 +1,5 @@
+import os
+from dotenv import load_dotenv
 import json
 from fastapi import FastAPI, Request, Form, status
 from fastapi.responses import HTMLResponse, RedirectResponse
@@ -12,17 +14,20 @@ app.add_middleware(SessionMiddleware, secret_key="your_secret_key")
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
+# connect DB
+load_dotenv()
+db = mysql.connector.connect(
+    host=os.environ['DB_HOST'],
+    user=os.environ['DB_USER'],
+    password=os.environ['DB_PASSWORD'],
+    database=os.environ['DB_NAME']
+)
+
+# load error messages
 with open("data/error_messages.json", "r") as file:
     ERROR_MESSAGES = json.load(file)
 
-# 建立資料庫連線
-db = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    password="",
-    database="website"
-)
-
+# routing
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
     return templates.TemplateResponse("home.html", {"request": request})
@@ -33,7 +38,31 @@ async def error(request: Request, message: str):
 
 @app.get("/member", response_class=HTMLResponse)
 async def member(request: Request):
-    return templates.TemplateResponse("member.html", {"request": request})
+    if "member_id" not in request.session:
+        return RedirectResponse(url="/", status_code=status.HTTP_303_SEE_OTHER)
+
+    cursor = db.cursor()
+    query = "SELECT member.username, message.content FROM message JOIN member ON message.member_id = member.id ORDER BY message.time DESC"
+    cursor.execute(query)
+    messages = cursor.fetchall()
+    cursor.close()
+
+    return templates.TemplateResponse("member.html", {"request": request, "messages": messages})
+
+@app.post("/createMessage")
+async def create_message(request: Request, content: Annotated[str, Form(...)]):
+    if "member_id" not in request.session:
+        return RedirectResponse(url="/", status_code=status.HTTP_303_SEE_OTHER)
+
+    member_id = request.session["member_id"]
+    cursor = db.cursor()
+    query = "INSERT INTO message (member_id, content) VALUES (%s, %s)"
+    values = (member_id, content)
+    cursor.execute(query, values)
+    db.commit()
+    cursor.close()
+
+    return RedirectResponse(url="/member", status_code=status.HTTP_303_SEE_OTHER)
 
 @app.post("/signin")
 async def signin(request: Request, username: Annotated[str, Form(...)], password: Annotated[str, Form(...)]):
