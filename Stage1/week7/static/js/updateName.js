@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const updateUsername = document.querySelector('#update-name');
   const updateButton = document.querySelector('#update-button');
   const updateResult = document.querySelector('#update-result');
+  const welcomeMessage = document.querySelector('#welcome-message');
 
   updateButton.addEventListener('click', async function () {
     const name = updateUsername.value;
@@ -12,6 +13,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (result && result.ok) {
       updateResult.appendChild(document.createTextNode('更新成功'));
+      welcomeMessage.textContent = `${name},歡迎登入系統`;
     } else {
       updateResult.appendChild(document.createTextNode('更新失敗'));
     }
