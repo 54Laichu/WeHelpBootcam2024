@@ -1,0 +1,6 @@
+{
+  "invalid_credentials": "Username or password is not correct",
+  "missing_fields": "請填寫所有必填字段。",
+  "internal_server_error": "服務器內部錯誤,請稍後再試。",
+  "repeated_username": "Repeated username"
+}

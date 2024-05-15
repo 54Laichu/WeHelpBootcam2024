@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Error Page</title>
+  <link rel="stylesheet" href="{{ url_for('static', path='/css/style.css') }}">
+</head>
+<body>
+  <div class="container">
+    <div class="formHeader">
+      <h1>失敗頁面</h1>
+    </div>
+    <div class="formBody">
+      <h2>{{ message }}</h2>
+      <a href="/" class="btn">返回首頁</a>
+    </div>
+  </div>
+</body>
+</html>

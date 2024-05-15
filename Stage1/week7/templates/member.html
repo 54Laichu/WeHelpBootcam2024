@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Member Page</title>
+  <link rel="stylesheet" href="{{ url_for('static', path='/css/style.css') }}">
+  <script src="{{ url_for('static', path='/js/searchUsername.js') }}"></script>
+  <script src="{{ url_for('static', path='/js/updateName.js') }}"></script>
+</head>
+<body>
+  <div class="container">
+    <div class="formHeader">
+      <h1>歡迎光臨,這是會員頁</h1>
+    </div>
+    <div class="formBody">
+      <h2>{{ request.session.get('member_name') }},歡迎登入系統</h2>
+      <a href="/signout">登出系統</a>
+      <h2>查詢會員姓名</h2>
+      <form>
+        <input id="username-input" name="content" required>
+        <button id="search-button" type="button" class="btn">查詢</button>
+      </form>
+      <div id="search-result"></div>
+    </div>
+
+    <div class="formBody">
+      <h2>更新我的姓名</h2>
+      <form>
+        <input id="update-name" name="content" required>
+        <button id="update-button" type="button" class="btn">更新</button>
+      </form>
+      <div id="update-result"></div>
+    </div>
+  </div>
+</body>
+</html>

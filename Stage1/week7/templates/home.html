@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home Page</title>
+  <link rel="stylesheet" href="{{ url_for('static', path='/css/style.css') }}">
+  <script src="{{ url_for('static', path='/js/script.js') }}"></script>
+</head>
+<body>
+  <div class="container">
+    <div class="formHeader">
+      <h1>歡迎光臨,請註冊登入系統</h1>
+    </div>
+    <div class="formBody">
+      <h2>註冊帳號</h2>
+      <form id="signupForm" method="post" action="/signup">
+        <label for="name-input">
+          姓名
+          <input type="text" id="name-input" name="name" placeholder="Name" required><br>
+        </label>
+        <label for="username-input">
+          帳號
+          <input type="text" id="username-input" name="username" placeholder="Username" required><br>
+        </label>
+        <label for="password-input">
+          密碼
+          <input type="password" id="password-input" name="password" placeholder="Password" required><br>
+        </label>
+        <input type="submit" value="註冊" class="btn">
+      </form>
+    </div>
+    <div class="formBody" style="border-top: 1px solid #ccc;">
+      <h2>登入系統</h2>
+      <form id="signinForm" method="post" action="/signin">
+        <label for="username-input">
+          帳號
+          <input type="text" id="signin-username-input" name="username" placeholder="Username" required><br>
+        </label>
+        <label for="password-input">
+          密碼
+          <input type="password" id="signin-password-input" name="password" placeholder="Password" required><br>
+        </label>
+        <input type="submit" value="登入" class="btn">
+      </form>
+    </div>
+  </div>
+</body>
+</html>
