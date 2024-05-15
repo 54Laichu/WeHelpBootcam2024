@@ -2,7 +2,7 @@ import os
 from dotenv import load_dotenv
 import json
 from fastapi import FastAPI, Request, Form, status
-from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.responses import HTMLResponse, RedirectResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from starlette.middleware.sessions import SessionMiddleware
@@ -125,3 +125,21 @@ async def delete_message(request: Request, message_id: str = Form(...)):
     cursor.close()
 
     return RedirectResponse(url="/member", status_code=status.HTTP_303_SEE_OTHER)
+
+
+@app.get("/api/member")
+async def api_member(request: Request, username: str = None):
+    if username:
+        cursor = db.cursor()
+        query = "SELECT * FROM member WHERE username = %s"
+        values = (username,)
+        cursor.execute(query, values)
+        member = cursor.fetchone()
+        cursor.close()
+
+        if not member:
+            return JSONResponse(status_code=status.HTTP_404_NOT_FOUND, content={"data": None})
+
+        return JSONResponse(status_code=status.HTTP_200_OK, content={"data": {"id": member[0], "name": member[1], "username": member[2]}})
+    else:
+        return JSONResponse(status_code=status.HTTP_400_BAD_REQUEST, content={"data": None})

@@ -7,6 +7,7 @@
   <title>Member Page</title>
   <link rel="stylesheet" href="{{ url_for('static', path='/css/style.css') }}">
   <script src="{{ url_for('static', path='/js/deleteButton.js') }}"></script>
+  <script src="{{ url_for('static', path='/js/searchUsername.js') }}"></script>
 </head>
 <body>
   <div class="container">
@@ -16,6 +17,12 @@
     <div class="formBody">
       <h2>{{ request.session.get('member_name') }},歡迎登入系統</h2>
       <a href="/signout">登出系統</a>
+      <h2>查詢會員姓名</h2>
+      <form>
+        <input id="username-input" name="content" required>
+        <button id="search-button" type="button" class="btn">查詢</button>
+      </form>
+      <div id="search-result"></div>
     </div>
     <div class="formBody" style="border-top: 1px solid #ccc;">
       <h2>快來留言吧</h2>
